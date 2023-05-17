@@ -11,6 +11,7 @@ Frequent Pattern (FP) Growth Algorithm
 - Run: 
 
 `./output_exe [min support] [input.txt] [output.txt]`
+
 `./output_exe 0.2 sample.txt sample_out.txt // min support is set to 0.2`
 
 
