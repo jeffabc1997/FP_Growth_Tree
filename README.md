@@ -14,6 +14,7 @@ Frequent Pattern (FP) Growth Algorithm, Data Mining, FP Tree
 `./output_exe 0.2 sample.txt sample_out.txt // min support is set to 0.2`
 
 - Other
+
 The result is not sorted by any order
 
 
