@@ -34,10 +34,7 @@ void constructFP(string, shared_ptr<fpNode>, map<string, link>&, int);
 shared_ptr<fpNode> conditional_tree(map<string, link>&, vector<pair<vector<string>, int>>&, int);
 void create_pattern(shared_ptr<fpNode> , map<string, link>&, int, string&, vector<string>, map<vector<string>, int>&);
 map<vector<string>, int> mine(shared_ptr<fpNode> , map<string, link>&, vector<pair<string, int>>&, int, int);
-//void count_combination(map<vector<string>, int>& , vector<string>, string, int);
 void write_file(map<vector<string>, int>&, string, int); 
-// void pTree(fpNode* , int);// for test constructFP
-// void test_link(fpNode*); // need to fix this
 
 bool comp_int_string (const pair<string, int> a, const pair<string, int> b) {
 	if(a.second == b.second) {
@@ -78,18 +75,6 @@ int main(int argc, char *argv[]) {
     int min_sup = (int) ceil(total_transaction * min_sup_pct);
     
     sort(frequency.begin(), frequency.end(), comp_int_string); // sort by frequency and then sort by string
-    
-    // for(int i = 0; i < frequency.size(); i++) { // delete not supported items in header table
-    //     string item_name = frequency[i].first;
-    //     if(header_table[item_name].freq < min_sup) {
-    //         header_table.erase(item_name);
-    //     }
-    // }
-    // find low frequency item, low points to the supported item with the lowest frequency
-    //auto low=std::lower_bound (frequency.begin(), frequency.end(), make_pair("", min_sup), comp_int_string); 
-    // if(low != frequency.begin()) { // delete not supported items
-    //     frequency.erase(frequency.begin(), low);
-    // }
 
     //fpNode* root = new fpNode("root");
     std::shared_ptr<fpNode> root(new fpNode("root"));
@@ -114,9 +99,7 @@ bool build_table(string input_file, int& transaction, map<string, link>& header_
         transaction++;
         while(getline(ss, tmp, ',')) { // split to 2 1 3 in ss
             header_table[tmp].freq++;
-            //cout << tmp << ' ';
-        }
-        //cout << endl;
+        }        
     }
     int min_sup = (int) ceil(transaction * min_support_pct);
     for(auto x: header_table) {
@@ -144,10 +127,7 @@ void constructFP(string input_file, shared_ptr<fpNode> root, map<string, link>& 
             }           
         }
         sort(sorted_t.begin(), sorted_t.end(), comp_greater_int); // sort by descending frequency and ascending string
-        // cout << "transaction: "; // print sorted transaction for us to build FP
-        // for(auto tes: sorted_t) {
-        //     cout << tes.first << " ";
-        // }
+
         for(auto item: sorted_t) {
             tmp_name = item.first;
             link* h_item = &header_table[tmp_name];         
@@ -173,7 +153,6 @@ void constructFP(string input_file, shared_ptr<fpNode> root, map<string, link>& 
             } 
         }
     }
-    //pTree(root, 0);
 }
 
 shared_ptr<fpNode> conditional_tree(map<string, link>& element_table, vector<pair<vector<string>, int>>& pattern_base, int min_support){
@@ -185,7 +164,6 @@ shared_ptr<fpNode> conditional_tree(map<string, link>& element_table, vector<pai
         vector<string> a_pattern = pattern_base[i].first; // transaction
         int value_pattern = pattern_base[i].second; // transaction value
         shared_ptr<fpNode> loc = root;
-        //int child_vec = loc->child.size();
         for(int j = a_pattern.size()-1; j >= 0; j--) {
             link* h_item = &element_table[a_pattern[j]];
             if(h_item->freq >= min_support) {
@@ -266,8 +244,6 @@ map<vector<string>, int> mine(shared_ptr<fpNode> root, map<string, link>& header
     return pattern_support;
 }
 
-
-
 void write_file(map<vector<string>, int>& ans, string output_file, int total_transaction) {
     ofstream myfile;
     myfile.open(output_file);
@@ -285,54 +261,3 @@ void write_file(map<vector<string>, int>& ans, string output_file, int total_tra
     //cout << "total: " << count << endl;
     myfile.close();
 }
-
-// void test_link(fpNode* head) {
-//     int count = 0;
-//     fpNode* tmp = head;
-//     while(tmp != NULL) {
-//         cout << "Link Node: " << tmp->name << ", "<< tmp->parent->name <<endl;
-//         count++;
-//         if(count > 30000) { // need to fix this
-//             return;
-//         }
-//         tmp = tmp->next;
-//     }
-// }
-// void pTree(fpNode* root, int count) { // for test constructFP
-//     cout << "Node Name: " << root->name << ", Value: " << root->val << endl;
-//     count++;
-//     if(count > 1000) { // need to fix this
-//         return;
-//     }
-//     for(int i = 0; i < root->child.size(); i++) {
-//         pTree(root->child[i], count);
-//     }
-// }
-
-    // for(auto x: frequency) { // check vector frequency
-    //     cout << "name after del: " << x.first << ", how many: " << x.second << endl;
-    // }
-    // for(auto x: header_table) {
-    //     cout << "H name: " << x.first << ", how many: " << x.second.freq << endl;
-    // }
-
-// void count_combination(map<vector<string>, int>& pattern_support, vector<string> one_path, string suffix, int tree_count) {
-//     if(one_path.empty()) {
-//         pattern_support[{suffix}] += tree_count;
-//         return;
-//     }
-//     int n = one_path.size();
-//     int total_possible = 1 << n; // 2^n      
-//     for(int i = 0; i < total_possible; i++) {
-//         vector<string> one_comb{};
-//         for(int j = 0, mask; j < n; j++) {
-//             mask = 1 << j;
-//             if(i & mask) {
-//                 one_comb.push_back(one_path[j]);            
-//             }
-//         }
-//         one_comb.push_back(suffix);
-//         sort(one_comb.begin(), one_comb.end());
-//         pattern_support[one_comb] += tree_count;
-//     }
-// }
