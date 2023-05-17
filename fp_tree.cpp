@@ -23,7 +23,6 @@ struct fpNode{
     fpNode(string s, int v, shared_ptr<fpNode> n): name(s), val(v), parent(n), next(NULL) {};
 };
 struct link {
-    //string name;
     int freq = 0;
     shared_ptr<fpNode> head = NULL;
     shared_ptr<fpNode> tail = NULL;
